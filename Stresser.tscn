@@ -1,0 +1,244 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://CPULoader.gd" type="Script" id=1]
+[ext_resource path="res://TitanRTX.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/Silicon.vfx.planar_reflection/planar_reflector.gd" type="Script" id=3]
+[ext_resource path="res://hex2.jpg" type="Texture" id=4]
+[ext_resource path="res://hex_rough2.jpg" type="Texture" id=5]
+[ext_resource path="res://fire.png" type="Texture" id=6]
+
+[sub_resource type="Animation" id=1]
+resource_name = "New Anim"
+length = 3.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 360, 0 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "New Anim"
+length = 10.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2.5, 7.5, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -30, 0, 0 ), Vector3( -30, -45, 0 ), Vector3( -30, 45, 0 ), Vector3( -30, 0, 0 ) ]
+}
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 2, 5, 2 )
+
+[sub_resource type="CubeMesh" id=4]
+size = Vector3( 10, 0.1, 10 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_texture = ExtResource( 4 )
+metallic_texture = ExtResource( 4 )
+roughness_texture = ExtResource( 5 )
+uv1_scale = Vector3( 20, 20, 1 )
+
+[sub_resource type="QuadMesh" id=6]
+size = Vector2( 15, 15 )
+
+[sub_resource type="SpatialMaterial" id=7]
+flags_transparent = true
+albedo_color = Color( 1, 1, 1, 0.419608 )
+metallic = 1.0
+roughness = 0.0
+
+[sub_resource type="ViewportTexture" id=8]
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="Animation" id=9]
+resource_name = "New Anim"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 3.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 3.8, 3.9 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, true, false ]
+}
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 32, 32 )
+size_override_stretch = true
+msaa = 4
+render_target_v_flip = true
+shadow_atlas_size = 1024
+
+[node name="Camera" type="Camera" parent="Viewport"]
+transform = Transform( 1, 0, 0, 0, 0.97046, 0.241261, 0, -0.241261, 0.97046, 0, 0.153744, 3.80249 )
+
+[node name="Titan RTX" parent="Viewport" instance=ExtResource( 2 )]
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="Viewport/Titan RTX"]
+autoplay = "New Anim"
+playback_speed = 0.5
+"anims/New Anim" = SubResource( 1 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Viewport"]
+transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, -2.44199, 2.29217, 3.00179 )
+shadow_enabled = true
+directional_shadow_mode = 0
+directional_shadow_blend_splits = true
+directional_shadow_depth_range = 1
+directional_shadow_max_distance = 14.9
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Viewport/DirectionalLight"]
+autoplay = "New Anim"
+"anims/New Anim" = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Viewport"]
+transform = Transform( 0.944932, 0, 0.327267, 0, 1, 0, -0.327267, 0, 0.944932, 0, 0, -3.95602 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="MeshInstance4" type="MeshInstance" parent="Viewport"]
+transform = Transform( 0.930296, 0, -0.36681, 0, 1, 0, 0.36681, 0, 0.930296, -2.44345, 0, -3.95602 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="MeshInstance5" type="MeshInstance" parent="Viewport"]
+transform = Transform( 0.921348, 0, 0.388738, 0, 1, 0, -0.388738, 0, 0.921348, -3.61597, -0.287051, -2.57168 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="MeshInstance2" type="MeshInstance" parent="Viewport"]
+transform = Transform( 0.334777, 0, 0.942297, 0, 1, 0, -0.942297, 0, 0.334777, 3.50844, -0.601651, -3.40315 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="MeshInstance3" type="MeshInstance" parent="Viewport"]
+transform = Transform( 0.76061, 0, 0.649209, 0, 1, 0, -0.649209, 0, 0.76061, 2.10883, -0.279761, -4.57767 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="MeshInstance6" type="MeshInstance" parent="Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.09937, 0 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
+
+[node name="PlanarReflector" type="MeshInstance" parent="Viewport"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -1.02351, 0 )
+mesh = SubResource( 6 )
+material/0 = SubResource( 7 )
+script = ExtResource( 3 )
+environment = null
+resolution = 2048
+fit_mode = 0
+perturb_scale = 0.7
+clip_bias = 0.1
+render_sky = true
+cull_mask = 1048575
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( 8 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -3.0
+margin_top = -16.0
+margin_right = 3.0
+color = Color( 0, 0, 0, 0.501961 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -14.0
+margin_right = 186.0
+text = "Warmup..."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -152.0
+margin_top = -14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 6.0
+one_shot = true
+autostart = true
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect2"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -128.0
+margin_top = -128.0
+margin_right = 128.0
+margin_bottom = 128.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ColorRect2"]
+autoplay = "New Anim"
+"anims/New Anim" = SubResource( 9 )
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
